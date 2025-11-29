@@ -1,4 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema, Model } from "mongoose";
+
+export interface INotification extends Document {
+  from: mongoose.Types.ObjectId | null; // default is null
+  to: mongoose.Types.ObjectId;
+  type: "news_update" | "breaking_news";
+  isRead: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const notificationSchema = new mongoose.Schema(
   {
@@ -13,7 +22,7 @@ const notificationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    type: {
+    cateogry: {
       type: String,
       required: true,
       enum: ["news_update", "breaking_news"],
@@ -27,6 +36,9 @@ const notificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Notification = new mongoose.model("Notification", notificationSchema);
+const Notification: Model<INotification> = mongoose.model<INotification>(
+  "Notification",
+  notificationSchema
+);
 
 export default Notification;

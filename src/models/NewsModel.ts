@@ -1,4 +1,28 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Schema, Model } from "mongoose";
+
+export interface INewsComment {
+  user: mongoose.Types.ObjectId;
+  text: string;
+  createdAt: Date;
+}
+
+export interface INews extends Document {
+  source: mongoose.Types.ObjectId;
+  title: string;
+  content: string;
+  image: string | null;
+  category:
+    | "Politics"
+    | "Sports"
+    | "Tech"
+    | "Business"
+    | "Entertainment"
+    | "General";
+  like: mongoose.Types.ObjectId[];
+  comments: INewsComment[];
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const newsSchema = new mongoose.Schema(
   {
@@ -57,6 +81,6 @@ const newsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const News = mongoose.model("News", newsSchema);
+const News: Model<INews> = mongoose.model<INews>("News", newsSchema);
 
 export default News;
